@@ -24,7 +24,25 @@ public class TaxCalculator
     public TaxCalculator(double userSalary, int userAge)
     {
         this._userSalary = userSalary;
-        this._userAge = userAge;
+        if (userAge <= 0 || userSalary <= 0)
+        {
+            throw new ArgumentException("value cannot be less than or equal to zero");
+
+        }
+        else if (userAge > 100)
+        {
+            throw new ArgumentException("User Age cannot be more than 100");
+        }
+        else
+        {
+
+
+            this._userAge = userAge;
+            this._userSalary = userSalary;
+
+
+        }
+
     }
 
     public double CalculateTax()
@@ -38,7 +56,7 @@ public class TaxCalculator
             }
             else if (this._userSalary > 250000 && this._userSalary <= 500000)
             {
-                this._taxAmount = ((this._userSalary-250000) * 5) / 100;
+                this._taxAmount = ((this._userSalary - 250000) * 5) / 100;
 
             }
             else if (this._userSalary > 500000 && this._userSalary <= 1000000)
@@ -61,7 +79,7 @@ public class TaxCalculator
             }
             else if (this._userSalary > 300000 && this._userSalary <= 500000)
             {
-                this._taxAmount = ((this._userSalary-300000) * 5) / 100;
+                this._taxAmount = ((this._userSalary - 300000) * 5) / 100;
             }
             else if (this._userSalary > 500000 && this._userSalary <= 1000000)
             {
@@ -75,7 +93,7 @@ public class TaxCalculator
             return this._taxAmount;
         }
         if (this._userAge > 80)
-        {   
+        {
             if (this._userSalary <= 500000)
             {
                 this._taxAmount = 0;
@@ -107,25 +125,39 @@ class TaxCalculatorAssignment
         double inputSalary;
         int inputAge;
 
-        Console.WriteLine("Enter Income");
-        while (!double.TryParse(Console.ReadLine(), out inputSalary))
-        {
-            Console.WriteLine("Invalid value please enter valid value ");
+
+
+    ValueAssignment:
+        try
+        { 
+            Console.WriteLine("Enter Income");
+            while (!double.TryParse(Console.ReadLine(), out inputSalary))
+            {
+
+                throw new ArgumentException("Invalid value please enter valid Number");
+            }
+        
+        
+            Console.WriteLine("Enter Age");
+            while (!int.TryParse(Console.ReadLine(), out inputAge))
+            {
+                throw new ArgumentException("Invalid value please enter valid Number");
+            }
+        
+        
+
+            TaxCalculator firstcal = new TaxCalculator(inputSalary, inputAge);
+            double result = firstcal.CalculateTax();
+            Console.WriteLine("===================================");
+            Console.WriteLine("Payable tax Amount is:{0}", firstcal.CalculateTax());
+            Console.WriteLine("===================================");
 
         }
-
-
-        Console.WriteLine("Enter Age");
-        while (!int.TryParse(Console.ReadLine(), out inputAge))
+        catch (Exception e)
         {
-            Console.WriteLine("Invalid Input Please enter Valid salary in numbers");
+            Console.WriteLine(e.Message);
+            goto ValueAssignment;
         }
-
-        TaxCalculator firstcal = new TaxCalculator(inputSalary, inputAge);
-        double result = firstcal.CalculateTax();
-        Console.WriteLine("===================================");
-        Console.WriteLine("Payable Tax Amount is  {0}", firstcal.CalculateTax());
-        Console.WriteLine("===================================");
 
 
     }
